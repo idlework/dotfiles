@@ -1,6 +1,7 @@
-[user]
-	name = idlework
-	email = 1837372+idlework@users.noreply.github.com
+[include]
+	path = ~/.gitconfig.local
+[includeIf "gitdir:~/Development/me/dotfiles/"]
+	path = ~/Development/me/dotfiles/git/identity
 [core]
 	editor = zed --wait
 [alias]

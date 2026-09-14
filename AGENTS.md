@@ -11,6 +11,7 @@ Public macOS dotfiles (GitHub `idlework`). Zed is the default editor; Neovim (La
 | `zsh/.zshenv`, `zsh/.zprofile`, `zsh/.zshrc` | `~/.zshenv`, `~/.zprofile`, `~/.zshrc` | zsh |
 | `git/gitconfig` | `~/.gitconfig` | git |
 | `git/ignore` | `~/.config/git/ignore` | git (global excludes) |
+| `git/identity` | included by `git/gitconfig` for this directory | git (commit identity `idlework`, noreply email) |
 | `zsh/git.zsh` | `~/.config/zsh/git.zsh` | zsh (vendored oh-my-zsh git plugin) |
 | `starship/starship.toml` | `~/.config/starship.toml` | starship |
 | `Brewfile` | not linked | `brew bundle` via `install.sh` |
@@ -25,6 +26,7 @@ Public macOS dotfiles (GitHub `idlework`). Zed is the default editor; Neovim (La
 - Never use the em dash character; use `-`.
 - No secrets in the repo. Machine-local secrets live in `~/.zshrc.local` (untracked, mode 600), sourced last by `zsh/.zshrc`. Before committing run `git grep -nE 'github_pat_[A-Za-z0-9_]{10,}|TOKEN=.?[A-Za-z0-9]{8,}'` and expect no output.
 - Never automate anything that reads or writes `~/.zshrc.local`.
+- No real name, email address or `/Users/<name>` path in tracked files or commit metadata: the real identity is in untracked `~/.gitconfig.local`, commits here are authored as `idlework`, and home paths use `$HOME`. Before pushing run `git log --format='%an <%ae>' | sort -u` and expect one line.
 - No drive-by cleanups in `zsh/` and `git/`; they mirror the machine and change only for a reason stated in the commit.
 - `zsh/git.zsh` is vendored from oh-my-zsh (source commit in its header): never hand-edit it, regenerate it from upstream.
 - A shell experiment lands in one commit so that `git revert` undoes it completely.

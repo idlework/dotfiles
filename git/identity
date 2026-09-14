@@ -1,0 +1,4 @@
+# Identity for commits in this repository only; gitconfig includes it for this directory.
+[user]
+	name = idlework
+	email = 1837372+idlework@users.noreply.github.com
