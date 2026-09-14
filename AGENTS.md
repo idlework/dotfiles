@@ -21,7 +21,7 @@ Public macOS dotfiles (GitHub `idlework`). Zed is the default editor; Neovim (La
 - Commit straight to `main`; no pull requests for this solo repo.
 - Never add `Co-Authored-By` or any AI attribution trailer to commits.
 - Never use the em dash character; use `-`.
-- No secrets in the repo. Machine-local secrets live in `~/.zshrc.local` (untracked, mode 600), sourced last by `zsh/.zshrc`. Before committing run `git grep -nE 'github_pat_|AUTH_TOKEN='` and expect no output.
+- No secrets in the repo. Machine-local secrets live in `~/.zshrc.local` (untracked, mode 600), sourced last by `zsh/.zshrc`. Before committing run `git grep -nE 'github_pat_[A-Za-z0-9_]{10,}|TOKEN=.?[A-Za-z0-9]{8,}'` and expect no output.
 - Never automate anything that reads or writes `~/.zshrc.local`.
 - No drive-by cleanups in `zsh/` and `git/`; they mirror the machine and change only for a reason stated in the commit.
 
