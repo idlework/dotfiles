@@ -1,0 +1,7 @@
+# Loaded before ~/Library/Application Support/com.mitchellh.ghostty/config (that file is empty). Reload: cmd+shift+,
+font-family = JetBrainsMono Nerd Font Mono
+font-size = 16
+theme = Dracula
+# Left Option acts as Alt for Neovim (<A-j>/<A-k> move lines, <M-]> next Copilot suggestion);
+# right Option keeps macOS accent input. Use true if you never type accents with Option.
+macos-option-as-alt = left
