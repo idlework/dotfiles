@@ -1,0 +1,46 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+# Starship defaults, trimmed: one line, directory name only, no language versions, no duration.
+
+[line_break]
+disabled = true
+
+[directory]
+truncation_length = 1
+truncate_to_repo = false
+
+[cmd_duration]
+disabled = true
+
+# gcloud is configured on this machine; the module would print the account on every prompt
+[gcloud]
+disabled = true
+
+# language and tool versions
+[nodejs]
+disabled = true
+[bun]
+disabled = true
+[deno]
+disabled = true
+[package]
+disabled = true
+[python]
+disabled = true
+[ruby]
+disabled = true
+[rust]
+disabled = true
+[java]
+disabled = true
+[kotlin]
+disabled = true
+[swift]
+disabled = true
+[lua]
+disabled = true
+[golang]
+disabled = true
+[gradle]
+disabled = true
+[cmake]
+disabled = true

@@ -1,150 +1,88 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+# Plain zsh, no framework. What oh-my-zsh used to provide lives here or in the tools sourced at the end:
+# git aliases in ~/.config/zsh/git.zsh (vendored oh-my-zsh git plugin), prompt by starship (~/.config/starship.toml),
+# node via the nvm fast path in .zshenv, brew shellenv and rbenv in .zprofile.
 
-# Path to your Oh My Zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+# Options and history
+setopt auto_cd auto_pushd pushd_ignore_dups interactive_comments
+setopt extended_history share_history hist_ignore_dups hist_ignore_space hist_expire_dups_first hist_verify
+unsetopt flow_control # frees Ctrl-S and Ctrl-Q
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=100000
+SAVEHIST=100000
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time Oh My Zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+# ls colors (oh-my-zsh values)
+export LSCOLORS="Gxfxcxdxbxegedabagacad"
+export LS_COLORS="di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
+alias ls='ls -G'
+alias ll='ls -lh'
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+# Completion: one compinit, the security audit once a day, results cached
+fpath=(/opt/homebrew/share/zsh/site-functions "$HOME/.cache/zsh/completions" $fpath)
+if [[ ! -f "$HOME/.cache/zsh/completions/_pnpm" ]] && command -v pnpm >/dev/null; then
+  mkdir -p "$HOME/.cache/zsh/completions"
+  pnpm completion zsh >"$HOME/.cache/zsh/completions/_pnpm" 2>/dev/null || rm -f "$HOME/.cache/zsh/completions/_pnpm"
+fi
+zmodload zsh/complist
+autoload -Uz compinit
+if [[ -n "$HOME"/.zcompdump(#qN.mh+24) ]]; then compinit; else compinit -C; fi
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' special-dirs true
+zstyle ':completion:*' use-cache yes
+zstyle ':completion:*' cache-path "$HOME/.cache/zsh"
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+# Keys: emacs mode, Up/Down search history by the typed prefix, word jumps with Option or Ctrl and arrows
+bindkey -e
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey '^[[A' up-line-or-beginning-search
+bindkey '^[OA' up-line-or-beginning-search
+bindkey '^[[B' down-line-or-beginning-search
+bindkey '^[OB' down-line-or-beginning-search
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[[3~' delete-char
+bindkey '^[[1;3C' forward-word
+bindkey '^[[1;3D' backward-word
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
 
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(brew git macos node npm nvm react-native zsh-autosuggestions)
-
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Default editor: Zed. Neovim is opt-in until fluent.
+# Editors: Zed stays the default, Neovim is opt-in
 export EDITOR="zed --wait"
 export VISUAL="$EDITOR"
+export REACT_EDITOR=zed
 
-# Compilation flags
-# export ARCHFLAGS="-arch $(uname -m)"
-
-# Set personal aliases, overriding those provided by Oh My Zsh libs,
-# plugins, and themes. Aliases can be placed here, though Oh My Zsh
-# users are encouraged to define aliases within a top-level file in
-# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
-# - $ZSH_CUSTOM/aliases.zsh
-# - $ZSH_CUSTOM/macos.zsh
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-alias zshconfig="zed ~/.zshrc"
-alias ohmyzsh="zed ~/.oh-my-zsh"
-
-# Claude Code with max effort
-alias claude="claude --effort max"
-
-# Ruby version manager
-eval "$(rbenv init - zsh)"
-
-# Launch simulators / emulators
-alias ios-simulator='open /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app'
-alias android-emulator='$ANDROID_HOME/emulator/emulator -avd Pixel_9_pro_api_35'
-
-# Android development
+# Android / Java
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
 export PATH="$PATH:$JAVA_HOME/bin"
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 export PATH="$PATH:$ANDROID_HOME/platform-tools"
 export PATH="$PATH:$ANDROID_HOME/emulator"
 
-# Git clean local branches with check remote server
-alias git-clean-branches="git remote prune origin | git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -d"
-
-
-# GSUtils / Google Cloud SDK via Brew
-source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
-source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
-
-
-# React Native Development
-export REACT_EDITOR=zed
+# Other tools on PATH
 export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
-
-# Added by LM Studio CLI (lms)
 export PATH="$PATH:$HOME/.lmstudio/bin"
+source "${HOMEBREW_PREFIX:-/opt/homebrew}/share/google-cloud-sdk/path.zsh.inc"
+typeset -U path # the export PATH= lines above drop the uniqueness flag set in .zshenv; dedupe once
 
-# Created by `pipx` on 2025-07-27 11:02:03
-export PATH="$PATH:$HOME/.local/bin"
-
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=($HOME/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
-
-# pnpm exec alias px
+# Aliases
+alias zshconfig="zed ~/.zshrc"
+alias claude="claude --effort max"
+alias ios-simulator='open /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app'
+alias android-emulator='$ANDROID_HOME/emulator/emulator -avd Pixel_9_pro_api_35'
+alias git-clean-branches="git remote prune origin | git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -d"
 alias px="pnpm exec"
 
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Git aliases (oh-my-zsh git plugin, vendored); needs compinit first because it calls compdef
+source "$HOME/.config/zsh/git.zsh"
+
+# fzf: Ctrl-R history, Ctrl-T file paths, Alt-C directories (only with a terminal: no zle without one)
+[[ -t 0 ]] && source <(fzf --zsh)
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+eval "$(starship init zsh)"
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh # keep last: it wraps the widgets above
 
 # Machine-local secrets and overrides (untracked)
 [ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"

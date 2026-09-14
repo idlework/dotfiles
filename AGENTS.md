@@ -11,6 +11,8 @@ Public macOS dotfiles (GitHub `idlework`). Zed is the default editor; Neovim (La
 | `zsh/.zshenv`, `zsh/.zprofile`, `zsh/.zshrc` | `~/.zshenv`, `~/.zprofile`, `~/.zshrc` | zsh |
 | `git/gitconfig` | `~/.gitconfig` | git |
 | `git/ignore` | `~/.config/git/ignore` | git (global excludes) |
+| `zsh/git.zsh` | `~/.config/zsh/git.zsh` | zsh (vendored oh-my-zsh git plugin) |
+| `starship/starship.toml` | `~/.config/starship.toml` | starship |
 | `Brewfile` | not linked | `brew bundle` via `install.sh` |
 
 `install.sh` creates the links (backing up real files to `<target>.bak`) and runs `brew bundle`.
@@ -24,6 +26,8 @@ Public macOS dotfiles (GitHub `idlework`). Zed is the default editor; Neovim (La
 - No secrets in the repo. Machine-local secrets live in `~/.zshrc.local` (untracked, mode 600), sourced last by `zsh/.zshrc`. Before committing run `git grep -nE 'github_pat_[A-Za-z0-9_]{10,}|TOKEN=.?[A-Za-z0-9]{8,}'` and expect no output.
 - Never automate anything that reads or writes `~/.zshrc.local`.
 - No drive-by cleanups in `zsh/` and `git/`; they mirror the machine and change only for a reason stated in the commit.
+- `zsh/git.zsh` is vendored from oh-my-zsh (source commit in its header): never hand-edit it, regenerate it from upstream.
+- A shell experiment lands in one commit so that `git revert` undoes it completely.
 
 ## Neovim
 
@@ -41,5 +45,5 @@ Public macOS dotfiles (GitHub `idlework`). Zed is the default editor; Neovim (La
 - `./install.sh` twice; the second run prints only `linked` lines and creates no `.bak` files.
 - `nvim --headless "+Lazy! sync" +qa`, then interactive `:LazyHealth`.
 - `nvim --headless -u NONE --cmd "set rtp+=nvim" -l nvim/tests/rn_test.lua` (script runner detection).
-- `time zsh -i -c exit` (baseline 1.2 s on 2026-09-14).
+- `zsh -i -c exit 2>&1 | wc -l` prints 0, and `time zsh -i -c exit` stays near 0.07 s (2026-09-14; oh-my-zsh took 0.54 s).
 - `ghostty +show-config | grep -E "^(font-family|font-size|theme|macos-option-as-alt)"`

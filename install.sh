@@ -27,6 +27,8 @@ link ghostty/config "$HOME/.config/ghostty/config"
 link zsh/.zshenv "$HOME/.zshenv"
 link zsh/.zprofile "$HOME/.zprofile"
 link zsh/.zshrc "$HOME/.zshrc"
+link zsh/git.zsh "$HOME/.config/zsh/git.zsh"
+link starship/starship.toml "$HOME/.config/starship.toml"
 link git/gitconfig "$HOME/.gitconfig"
 link git/ignore "$HOME/.config/git/ignore"
 

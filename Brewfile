@@ -14,6 +14,8 @@ brew "tree-sitter-cli"   # nvim-treesitter main branch compiles parsers with the
 brew "nvm"
 brew "rbenv"
 brew "zsh-syntax-highlighting"
+brew "zsh-autosuggestions"
+brew "starship"           # prompt
 cask "gcloud-cli"              # .zshrc sources share/google-cloud-sdk unconditionally
 cask "git-credential-manager"  # gitconfig credential.helper
 

@@ -6,7 +6,9 @@ Public macOS dotfiles for a React Native / TypeScript workflow. Zed stays the de
 |---|---|---|
 | `nvim/` | `~/.config/nvim` | LazyVim config: vtsls, Biome, oxlint/oxfmt, Tailwind, Copilot, Claude Code, RN script runner |
 | `ghostty/config` | `~/.config/ghostty/config` | JetBrainsMono Nerd Font 16, Dracula, left Option as Alt |
-| `zsh/.zshenv`, `zsh/.zprofile`, `zsh/.zshrc` | `~/.zshenv`, `~/.zprofile`, `~/.zshrc` | oh-my-zsh, nvm loaded once, `EDITOR=zed --wait`, sources `~/.zshrc.local` last |
+| `zsh/.zshenv`, `zsh/.zprofile`, `zsh/.zshrc` | `~/.zshenv`, `~/.zprofile`, `~/.zshrc` | plain zsh: starship, fzf keys, nvm fast path, `EDITOR=zed --wait`, sources `~/.zshrc.local` last |
+| `zsh/git.zsh` | `~/.config/zsh/git.zsh` | the oh-my-zsh git aliases (`gst`, `gco`, `ggpush`, ...), vendored |
+| `starship/starship.toml` | `~/.config/starship.toml` | prompt: one line, directory name, git branch and status |
 | `git/gitconfig`, `git/ignore` | `~/.gitconfig`, `~/.config/git/ignore` | identity, `zed --wait` as editor, global ignores |
 | `Brewfile` | not linked | everything the files above need, installed by `install.sh` |
 
@@ -17,8 +19,6 @@ Secrets never live here. `~/.zshrc.local` (untracked, `chmod 600`) holds machine
 ```sh
 xcode-select --install
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 git clone git@github.com:idlework/dotfiles.git ~/Development/me/dotfiles
 install -m 600 /dev/null ~/.zshrc.local   # add your exports here
 ~/Development/me/dotfiles/install.sh
@@ -78,6 +78,23 @@ Line numbers are absolute like Zed; `<leader>uL` switches to relative numbers on
 
 - Tailwind class completion and lint work in `className` and inside `cn`, `cva`, `clsx` and `twMerge` calls (NativeWind, UniWind).
 - Simulators, Metro logs, Maestro and Fastlane stay in Ghostty tabs, unchanged.
+
+## Shell
+
+Plain zsh, no framework, starting in about 0.07 s where oh-my-zsh took 0.54 s. `zsh/.zshrc` sets the options, history, completion and keys; the tools sourced at its end provide the rest.
+
+| Feature | Where |
+|---|---|
+| Prompt | starship, `starship/starship.toml`: directory name, git branch and status, red `❯` after a failed command |
+| Git aliases (`gst`, `gaa`, `gc`, `ggpush`, `gco`, `gcb`, `gf`, `grb`, `gd`, `glola`, ...) | `zsh/git.zsh`, the oh-my-zsh git plugin vendored as is; `alias \| grep '^g'` lists all 200 |
+| node, npm, pnpm, npx | `zsh/.zshenv` puts the newest installed nvm node on PATH; `nvm` itself loads on first use; `.nvmrc` files are not read |
+| History | 100k entries shared across tabs; Up and Down search history by what you already typed |
+| Ctrl-R, Ctrl-T, Alt-C | fzf: fuzzy history, insert a file path, jump to a directory |
+| Completion | brew site-functions plus a cached `pnpm` completion; case-insensitive, arrow-key menu |
+| `..`, `cd -` and bare paths | `auto_cd` and `auto_pushd`, as before |
+| Suggestions, colors | zsh-autosuggestions (Right arrow accepts), zsh-syntax-highlighting |
+
+Back to oh-my-zsh: `git revert` the commit `feat(zsh): replace oh-my-zsh with plain zsh, starship and fzf`, open a new tab, and `rm ~/.config/starship.toml ~/.config/zsh/git.zsh`. `~/.oh-my-zsh` stays on disk until you delete it.
 
 ## Git
 
