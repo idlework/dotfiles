@@ -1,0 +1,16 @@
+[user]
+	name = idlework
+	email = 1837372+idlework@users.noreply.github.com
+[core]
+	editor = zed --wait
+[alias]
+	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+[init]
+	defaultBranch = main
+[url "git@github.com:"]
+	insteadOf = git@github-
+[credential]
+	helper = 
+	helper = /usr/local/share/gcm-core/git-credential-manager
+[credential "https://dev.azure.com"]
+	useHttpPath = true
