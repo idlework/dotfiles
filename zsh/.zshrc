@@ -19,8 +19,8 @@ alias ll='ls -lh'
 # Completion: one compinit, the security audit once a day, results cached
 fpath=(/opt/homebrew/share/zsh/site-functions "$HOME/.cache/zsh/completions" $fpath)
 if [[ ! -f "$HOME/.cache/zsh/completions/_pnpm" ]] && command -v pnpm >/dev/null; then
-  mkdir -p "$HOME/.cache/zsh/completions"
-  pnpm completion zsh >"$HOME/.cache/zsh/completions/_pnpm" 2>/dev/null || rm -f "$HOME/.cache/zsh/completions/_pnpm"
+    mkdir -p "$HOME/.cache/zsh/completions"
+    pnpm completion zsh >"$HOME/.cache/zsh/completions/_pnpm" 2>/dev/null || rm -f "$HOME/.cache/zsh/completions/_pnpm"
 fi
 zmodload zsh/complist
 autoload -Uz compinit
@@ -55,7 +55,7 @@ export VISUAL="$EDITOR"
 export REACT_EDITOR=zed
 
 # Android / Java
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
 export PATH="$PATH:$JAVA_HOME/bin"
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 export PATH="$PATH:$ANDROID_HOME/platform-tools"
@@ -74,6 +74,8 @@ alias ios-simulator='open /Applications/Xcode.app/Contents/Developer/Application
 alias android-emulator='$ANDROID_HOME/emulator/emulator -avd Pixel_9_pro_api_35'
 alias git-clean-branches="git remote prune origin | git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -d"
 alias px="pnpm exec"
+alias npm=pnpm
+alias npx=pnpx
 
 # Git aliases (oh-my-zsh git plugin, vendored); needs compinit first because it calls compdef
 source "$HOME/.config/zsh/git.zsh"
