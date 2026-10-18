@@ -10,6 +10,7 @@ Public macOS dotfiles for a React Native / TypeScript workflow. Zed stays the de
 | `zsh/git.zsh` | `~/.config/zsh/git.zsh` | the oh-my-zsh git aliases (`gst`, `gco`, `ggpush`, ...), vendored |
 | `starship/starship.toml` | `~/.config/starship.toml` | prompt: one line, directory name, git branch and status |
 | `git/gitconfig`, `git/ignore`, `git/identity` | `~/.gitconfig`, `~/.config/git/ignore` | `zed --wait` as editor, global ignores; the real identity lives in untracked `~/.gitconfig.local`, this repo commits as `idlework` |
+| `claude/CLAUDE.md` | `~/.claude/CLAUDE.md` | global instructions every Claude Code session reads, in any project |
 | `Brewfile` | not linked | everything the files above need, installed by `install.sh` |
 
 Secrets and identity never live here. `~/.zshrc.local` (untracked, `chmod 600`) holds machine-local exports such as private npm registry tokens and is sourced at the end of `.zshrc`; `~/.gitconfig.local` (untracked) holds the git name and email, and `git/identity` overrides them inside this repository so its commits stay pseudonymous.

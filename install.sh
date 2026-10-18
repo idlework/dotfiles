@@ -31,6 +31,7 @@ link zsh/git.zsh "$HOME/.config/zsh/git.zsh"
 link starship/starship.toml "$HOME/.config/starship.toml"
 link git/gitconfig "$HOME/.gitconfig"
 link git/ignore "$HOME/.config/git/ignore"
+link claude/CLAUDE.md "$HOME/.claude/CLAUDE.md"
 
 command -v brew >/dev/null || {
   echo "Homebrew missing: https://brew.sh"
